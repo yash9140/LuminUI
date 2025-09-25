@@ -13,6 +13,10 @@ dotenv.config();
 
 const app = express();
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
 app.use(morgan('dev'));
@@ -27,6 +31,10 @@ app.use('/api/tasks', taskRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
+app.get('/', (req, res) => {
+  res.send('Hello! Server is running.');
+});
+
 
 const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/luminui';
@@ -42,5 +50,6 @@ mongoose
     console.error('Failed to connect to MongoDB', err);
     process.exit(1);
   });
+
 
 
